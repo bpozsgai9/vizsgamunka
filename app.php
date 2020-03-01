@@ -7,6 +7,8 @@ include('forms.php');
 setcookie("user_permission", $_SESSION["user_permission"], time() + (86400), "/");
 setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 //print_r($_SESSION);
+
+//tesztCommit
 ?>
 
 <!DOCTYPE html>
