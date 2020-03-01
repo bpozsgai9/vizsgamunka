@@ -1,0 +1,71 @@
+body{
+  font-family: 'Space Mono';
+}
+.signinPanel{ 
+  max-width: 20%;
+  margin: 0 auto;
+  margin-top: 10%;
+  border: 2px solid black;
+}
+
+/*címsor*/
+.signnHeading{
+  background: black;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+label{
+  padding: none;
+  font-size: 200%;
+}
+
+/*ebbe van benne az input*/
+.signinInput{
+  background-color: white;
+  padding: 10%;
+}
+
+
+input[type='text'],
+input[type='password']{
+  font-family: 'Space Mono';
+  font-size: 110%;
+  font-style: italic;
+  border: none;
+}
+
+/*submit közötti vonal*/
+.vonal{
+  border-top: 2px solid black;
+}
+
+/*submit helye*/
+.signinSubmit{
+  background-color: black;
+  text-align: center;
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
+input[type='submit']{
+  font-family: 'Space Mono';
+  font-size: 18px;
+  background: black;
+  color: white;
+  border: none;
+}
+
+.visszaA{
+  font-size: 18px;
+  background-color: black;
+  text-align: center;
+  padding-top: 2%;
+  padding-bottom: 5%;
+}
+
+a{
+  color: cyan;
+  text-decoration: none;
+}

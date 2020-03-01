@@ -1,0 +1,105 @@
+body {
+	margin: 0;
+	background-color: #000;
+	color: #fff;
+	font-family: Space Mono;
+	font-size: 13px;
+	line-height: 24px;
+}
+
+button {
+	cursor: pointer;
+	font-family: Space Mono;
+	background-color: #fff;
+	border: none;
+	width: 120px;
+}
+
+button:hover{
+	background-color: cyan;
+}
+
+input[type=submit]{
+  font-family: 'Space Mono';
+  border: none;
+  background-color: white;
+  color: black;
+}
+
+input[type=number]{
+  font-family: 'Space Mono';
+  border: none;
+  background-color: white;
+  color: black;
+}
+
+
+input[type=submit]:hover{
+	background-color: cyan;
+}
+
+canvas {
+	display: block;
+}
+
+a, button, input, select {
+	pointer-events: auto;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+img{
+	width: 100px;
+	height: 100px;
+}
+
+/*------új projekt fül------*/
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	text-align: left;
+	padding: 8px;
+}
+
+tr{
+	color: black;
+
+}
+
+tr:nth-child(even) {
+	background-color: black;
+	color: white;
+}
+
+.vonal{
+  border-top: 2px solid black;
+}
+/*-------------------*/
+
+.ujProjekt button {
+	font-family: 'Space Mono';
+ 	background: red;
+	color: white;
+	border: none;
+}
+
+.ujProjekt input[type='submit']{
+	font-family: 'Space Mono';
+ 	background: red;
+	color: white;
+	border: none;
+}
+
+.ujProjekt input[type='text']{
+  font-family: 'Space Mono';
+  background: white;
+  color: black;
+  border: none;
+}

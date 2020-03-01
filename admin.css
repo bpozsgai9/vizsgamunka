@@ -1,0 +1,42 @@
+body{
+	background: white;
+	font-family: 'Space Mono';
+	color: black;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: black;
+	color: white;
+}
+
+input[type='text']{
+  font-family: 'Space Mono';
+  background: white;
+  color: black;
+  border: none;
+}
+
+input[type='submit']{
+  font-family: 'Space Mono';
+  background: red;
+  color: white;
+  border: none;
+}
+
+button {
+	font-family: 'Space Mono';
+ 	background: red;
+	color: white;
+	border: none;
+}
+

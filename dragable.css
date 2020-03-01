@@ -1,0 +1,14 @@
+#mydiv {
+  position: absolute;
+  z-index: 9;
+  background-color: black;
+  text-align: center;
+  padding: 20px;
+}
+
+#mydivheader {
+  cursor: move;
+  z-index: 10;
+  background-color: black;
+  color: white;
+}
