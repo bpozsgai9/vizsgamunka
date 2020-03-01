@@ -59,7 +59,7 @@ setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 
 		
 		<!-- modal -->
-		<div id="projectModal" class="modal">
+		<div id="projectModal" class="modal"> 
 			<!-- modal tartalom -->
 			<div class="modal-content">
 				<div class="modal-header">
