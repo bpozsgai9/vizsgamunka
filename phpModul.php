@@ -154,7 +154,8 @@ public function listProjects($user_id){
 	    			echo "<td>" . $row['datum'] . "</td>";
 	    			//betöltés
 	    			echo "<form method='POST'>";
-						echo "<td><button id='betolt" . $row['id'] . "'>Betöltés</button></td>";
+						echo "<td><input type='hidden' name='projectBetoltesId' value='" . $row['id'] . "'></td>";
+						echo "<td><input id='projectBetoltes' type='submit' name='projectBetoltesButton' value='Betöltés'></td>";
 					echo "</form>";
 	    			//törlés
 	    			echo "<form action='app.php' method='POST'>";
@@ -202,11 +203,12 @@ public function listProjects($user_id){
 
 	public function loadFurnitures($project_id){
 
-		$sql = "SELECT furniture_name FROM furniture WHERE project_id =" . $project_id;
+		$sql = "SELECT id, furniture_name FROM furniture WHERE project_id =" . $project_id;
 
 		if ($result->num_rows > 0) {
 		    while($row = $result->fetch_assoc()) {
-		        return $row["furniture_name"];
+				$array = [$row["id"], $row["furniture_name"]];
+		        return $array;
 		    }
 		} else {
 		    return "0 results";

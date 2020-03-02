@@ -176,15 +176,15 @@ function render() {
 	raycaster.setFromCamera(mouse, camera);
 	var intersects = raycaster.intersectObjects(scene.children);
 	butorok = scene.children;
-	/*
-	if (intersects.length > 0) {
+	
+	/*if (intersects.length > 0) {
 		if (INTERSECTED != intersects[0].object) {
 			if (INTERSECTED) {
 				control.detach(INTERSECTED);
 			}
-			INTERSECTED = intersects[0].object; 
-			control.detach(INTERSECTED.attached);
+			INTERSECTED = intersects[0].object;
 			control.attach(INTERSECTED);
+			control.detach(INTERSECTED.attached);
 
 			//////////////////////////////////////////
 			butorok = scene.children;
@@ -318,26 +318,21 @@ $("#mentesButton").click(function (event) {
 
 //BETÖLTÉS///////////////////////////////////////////////////////////////
 //projekt betöltés
-$("#projectBetoltes").click(function (event) {
+/*$("#projectBetoltes").click(function (event) {
 	event.preventDefault();
 	console.log('valami');
 	var loadId = $('#loadId').val();
 	$.ajax({
 		url: 'load.php',
 		method: 'POST',
-		data: {
-			action: 'load',
-			loadId: loadId
-		},
 		success: function (data) {
+			
 			console.log("Ez az amit visszaad: " + data);
+			$("#kiiratashelye").html(data);
+			
 			//fel kell dolgozni a tömböt
 			var adatTomb = data;
-
-			//objectEleresiUtvonal = ;
-			//objectMaterialEleresiUtvonal = ;
-			//objectName = ;
-			//betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);
+			
 			objectEleresiUtvonal = null;
 			objectMaterialEleresiUtvonal = null;
 			objectName = null;
@@ -346,7 +341,7 @@ $("#projectBetoltes").click(function (event) {
 			console.log('Hiba: ', exception);
 		}
 	});
-});
+});*/
 
 //kijelölés
 document.addEventListener('click', function (event) {
@@ -355,7 +350,11 @@ document.addEventListener('click', function (event) {
 	for (var i = 0; i < kattinthatoKepek.length; i++) {
 		var kattintvaLettE = kattinthatoKepek[i].contains(event.target);
 		if (kattintvaLettE) {
+			//ajax!!!
 			kattinthatoKepek[i].style.border = '5px solid lime';
+			objectEleresiUtvonal = null;
+			objectMaterialEleresiUtvonal = null;
+			objectName = null;
 		}
 	}
 });
@@ -373,7 +372,8 @@ document.addEventListener('click', function (event) {
 });
 
 //ez a button végzi a betöltést
-document.getElementById("loaderButton").onclick = function () {
+const loaderButton = document.getElementById('loaderButton');
+loaderButton.addEventListener('click', () => {
 	if (objectEleresiUtvonal == null) {
 		alert("Jelölj ki egy képet!");
 	} else {
@@ -388,7 +388,8 @@ document.getElementById("loaderButton").onclick = function () {
 		//alert
 		alert("Sikeresen hozzáadva!");
 	}
-}
+
+});
 
 function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName) {
 	// függvény ami paramétereket vár
