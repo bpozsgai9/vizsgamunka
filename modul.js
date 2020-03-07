@@ -9,6 +9,7 @@ var camera, scene, raycaster, renderer;
 var control;
 var orbit;
 var loader; //obj loader
+var loaderId; //id a betöltéshez
 var objectEleresiUtvonal; //betöltéshez az út
 var objectMaterialEleresiUtvonal; //betöltéshez az út
 var objectName; // betöltéshez a bútor neve
@@ -354,9 +355,9 @@ document.addEventListener('click', function (event) {
 		if (kattintvaLettE) {
 			//ajax!!!
 			kattinthatoKepek[i].style.border = '5px solid lime';
-			objectEleresiUtvonal = null;
-			objectMaterialEleresiUtvonal = null;
-			objectName = null;
+			loaderId = kattinthatoKepek[i].nextElementSibling.value;
+			console.log('kattban');
+			console.log(loaderId);
 		}
 	}
 });
@@ -373,24 +374,38 @@ document.addEventListener('click', function (event) {
 	}
 });
 
+
 //ez a button végzi a betöltést
-const loaderButton = document.getElementById('loaderButton');
+var loaderButton = document.getElementById('loaderButton');
 loaderButton.addEventListener('click', () => {
-	if (objectEleresiUtvonal == null) {
+	if (loaderId == null) {
 		alert("Jelölj ki egy képet!");
+		console.log("félrefut");
 	} else {
-		//függvény
-		betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);
-
-		//biztonság kedvéért
-		objectEleresiUtvonal = null;
-		objectMaterialEleresiUtvonal = null;
-		objectName = null;
-
-		//alert
-		alert("Sikeresen hozzáadva!");
+		console.log("fv-ben");
+		console.log(loaderId);
+		$.ajax({
+			url: 'load.php',
+			method: 'POST',
+			data: {
+				loaderId: loaderId,
+				loaderAction: 'load'
+			},
+			success: function (data) {
+				console.log("Ez az amit visszaad: " + data);
+				var obj = JSON.parse(data);
+				console.log(obj[0]);
+				//betölt
+				objectName = obj[0];
+				objectEleresiUtvonal = obj[1];
+				objectMaterialEleresiUtvonal = obj[2];
+				betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);
+			},
+			error: function (jqxhr, status, exception) {
+				console.log('Hiba: ', exception);
+			}
+		});
 	}
-
 });
 
 function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName) {

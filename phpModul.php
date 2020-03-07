@@ -119,10 +119,12 @@ class PhpModul{
 
 		if ($result->num_rows > 0) {
 	    	while($row = $result->fetch_assoc()) {
-	  			echo "<div id=" . $row['furniture_pic_id'] . " style='display: inline-block; margin: 5px;'>";
-	    			echo "<img src=" . $row['furniture_img'] . ">";
+				  echo "<div style='display: inline-block; margin: 5px;'>";
+					echo "<img src=" . $row['furniture_img'] . ">";
+					echo "<input type='hidden' name='furniture_pic_id' value='" . $row['furniture_pic_id'] . "'>";
 	    			echo "<div style='text-align: center;'>";
-	      			echo "<label>" . $row['furniture_name'] ."</label>";
+					echo "<label>" . $row['furniture_name'] ."</label>";
+					echo "";  
 	    			echo "</div>";
 	  			echo "</div>";
 	    		}
@@ -230,6 +232,22 @@ public function listProjects($user_id){
 		}
 	}
 
+	public function loadWareHouse($furniture_pic_id){
+
+		$sql = "SELECT furniture_name, furniture_path, furniture_material_path 
+				FROM warehouse 
+				WHERE furniture_pic_id = '" . $furniture_pic_id . "'";
+		
+		$result = $this->conn->query($sql);
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+				$array = [ $row["furniture_name"], $row["furniture_path"], $row["furniture_material_path"] ];
+		        return $array;
+		    }
+		} else {
+		    return "0 results";
+		}
+	}
 
 }
 
