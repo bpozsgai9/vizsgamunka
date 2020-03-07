@@ -57,13 +57,20 @@ function init() {
 	scene.add(light);
 
 	//alap kocka a teszteléshez
-	var geometry = new THREE.BoxBufferGeometry(1, 1, 1);
-	var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff }));
+	//BoxBufferGeometry konstruktor(xHossz, yHossz, zHossz)
+	var tesztGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
+	//MeshLambertMaterial (fényfogadó anyag)
+	var tesztMaterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
+	//Mesh (kész forma) konstruktor(geometry, material)
+	var object = new THREE.Mesh(tesztGeometry, tesztMaterial);
+	//árnyék vetés
 	object.castShadow = true;
+	//árnyék fogadás
 	object.receiveShadow = true;
+	//pozíció
 	object.position.set(0, 0, 0);
+	//név
 	object.name = "tesztKocka";
-
 	//alap kocka jelenethez adása
 	scene.add(object);
 
@@ -175,8 +182,6 @@ function onMouseDown(event) {
 function render() {
 	raycaster.setFromCamera(mouse, camera);
 	var intersects = raycaster.intersectObjects(scene.children);
-	butorok = scene.children;
-	
 	/*if (intersects.length > 0) {
 		if (INTERSECTED != intersects[0].object) {
 			if (INTERSECTED) {
@@ -184,13 +189,10 @@ function render() {
 			}
 			INTERSECTED = intersects[0].object;
 			control.attach(INTERSECTED);
-			control.detach(INTERSECTED.attached);
-
-			//////////////////////////////////////////
 			butorok = scene.children;
-			console.log(scene.children);
-			console.log(butorok);
-			console.log(butorok.length);
+			//console.log(scene.children);
+			//console.log(butorok);
+			//console.log(butorok.length);
 		}
 	} else {
 		if (INTERSECTED){ 
