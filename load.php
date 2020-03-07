@@ -9,9 +9,12 @@ if (isset($_POST['projectBetoltesButton'])){
 	$loadId = $_POST["projectBetoltesId"];
 	//id és projectname van benne
 	$project = $phpModul->loadProjectName($loadId);
-	print_r($project);
 	//id és furniture name van benne, kieg
 	$furnitures = $phpModul->loadFurnitures($loadId);
+	$furnituresId = [];
+	foreach ($furnitures as $fId){
+		$furnituresId.array_push($fId['id']);
+	}
 	//$positions = $phpModul->loadPositions(/*furniture_id*/ );
 	
 

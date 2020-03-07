@@ -14,7 +14,7 @@ setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 <!DOCTYPE html>
 <html lang="hu">
 	<head>
-		<title>teszt</title>
+		<title>TrueBox</title>
 		<!--ha a kódolás nem utf-8, akkor a js keycode event nem fog működni-->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"> <!--mobilhoz-->
