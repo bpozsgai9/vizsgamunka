@@ -90,18 +90,21 @@ setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 						?>
 						<h2>Eddigi Projektek:</h2>
 						<div class="vonal"></div>
-						<?php
-							//listázás
-							$phpModul->listProjects($phpModul->getCurrentUserId($_SESSION['user_name']));
-							//törlés
-							if (isset($_POST['deleteProject'])) {
-									$phpModul->deleteProject($_POST['deleteProjectId']);
+						<div id='projektLista'>
+							<?php
+								//listázás
+								$phpModul->listProjects($phpModul->getCurrentUserId($_SESSION['user_name']));
+								//törlés
+								if (isset($_POST['deleteProject'])) {
+										$phpModul->deleteProject($_POST['deleteProjectId']);
 								}	
-						?>
+							?>
+						</div>
 					</div>
 			    </div>
 			    <div class="modal-footer">
-			    	<br />
+					Jelöld ki amelyiket be szeretnéd tölteni
+					<button id="projectBetoltesButton">Betöltés</button>
 			    </div>
 			</div>
 		</div>
@@ -117,7 +120,6 @@ setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 				<div class="modal-body">
 					<div id="kattinthatoKepek">
 					<?php
-						$phpModul = new PhpModul();
 						$phpModul->listIcons(); 
 					?>
 					</div>

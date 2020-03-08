@@ -119,7 +119,7 @@ class PhpModul{
 
 		if ($result->num_rows > 0) {
 	    	while($row = $result->fetch_assoc()) {
-				  echo "<div style='display: inline-block; margin: 5px;'>";
+				echo "<div style='display: inline-block; margin: 5px;'>";
 					echo "<img src=" . $row['furniture_img'] . ">";
 					echo "<input type='hidden' name='furniture_pic_id' value='" . $row['furniture_pic_id'] . "'>";
 	    			echo "<div style='text-align: center;'>";
@@ -140,31 +140,21 @@ public function listProjects($user_id){
 		$sql = "SELECT id, project_name, datum FROM project WHERE user_id =" . $user_id;
 		$result = $this->conn->query($sql);
 
-		//tábla teteje
-		echo "<table>";
-			echo "<tr>";
-				echo "<th>PROJEKT NÉV</th>";
-				echo "<th>LÉTREHOZÁS DÁTUMA</th>";
-				echo "<th></th>";
-				echo "<th></th>";
-			echo "</tr>";
-
 		if ($result->num_rows > 0) {
 	    	while($row = $result->fetch_assoc()) {
-	    		echo "<tr>";
-	    			echo "<td>" . $row['project_name'] . "</td>";
-	    			echo "<td>" . $row['datum'] . "</td>";
-	    			//betöltés
-	    			echo "<form method='POST'>";
-						echo "<td><input type='hidden' name='projectBetoltesId' value='" . $row['id'] . "'></td>";
-						echo "<td><input id='projectBetoltes' type='submit' name='projectBetoltesButton' value='Betöltés'></td>";
-					echo "</form>";
-	    			//törlés
+				echo "<div style='display: inline-block; margin: 5px;' class='letter'>";
+					echo "<div style='text-align: center;'>";
+					echo "<label style='font-size: 200%; color: red;'>" . strtoupper(($row['project_name'])[0]) ."</label><br />";
+					echo "<label>" . $row['project_name'] ."</label><br />";
+					echo "<label>" . $row['datum'] ."</label>";
+					echo "</div>";
+				echo "</div>";
+				echo "<input type='hidden' name='project_id' value='" . $row['id'] . "'>";  
+	    			/*//törlés
 	    			echo "<form action='app.php' method='POST'>";
 	    				echo "<input type='hidden' name='deleteProjectId' value='" . $row['id'] ."'>";
 	    				echo "<td><input type='submit' name='deleteProject' value='Törlés'></td>";
-    				echo "</form>";
-	    		echo "</tr>";
+    				echo "</form>";*/
 	    		}
 			} else {
 		    	echo "Nincs adat";
@@ -189,14 +179,12 @@ public function listProjects($user_id){
 
 	public function loadProjectName($id){
 
-		$sql = "SELECT id, project_name FROM project WHERE id =" . $id;
-
+		$sql = "SELECT project_name FROM project WHERE id =" . $id;
 		$result = $this->conn->query($sql);
 
 		if ($result->num_rows > 0) {
 		    while($row = $result->fetch_assoc()) {
-		    	$array = [ $row["id"], $row["project_name"] ];
-		        return $array;
+		        return $row["project_name"];
 		    }
 		} else {
 		    return "0 results";
@@ -206,18 +194,22 @@ public function listProjects($user_id){
 	public function loadFurnitures($project_id){
 
 		$sql = "SELECT id, furniture_name FROM furniture WHERE project_id =" . $project_id;
+		$result = $this->conn->query($sql);
 
+		$bigArray = [];
 		if ($result->num_rows > 0) {
 		    while($row = $result->fetch_assoc()) {
-				$array = [$row["id"], $row["furniture_name"]];
-		        return $array;
-		    }
+				$array = [ "id" => $row["id"], "furniture_name" => $row["furniture_name"] ];
+				array_push($bigArray, $array);
+			}
+			return $bigArray;
 		} else {
 		    return "0 results";
 		}
 
 	}
 
+	//itt tartok
 	public function loadPositions($furniture_id){
 
 		$sql = "SELECT x, y, z, xr, yr, zr, scale FROM positions WHERE furniture_id =" . $furniture_id;

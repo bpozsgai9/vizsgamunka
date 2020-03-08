@@ -10,6 +10,7 @@ var control;
 var orbit;
 var loader; //obj loader
 var loaderId; //id a betöltéshez
+var projektLoaderId; //id a projektbetöltéshez
 var objectEleresiUtvonal; //betöltéshez az út
 var objectMaterialEleresiUtvonal; //betöltéshez az út
 var objectName; // betöltéshez a bútor neve
@@ -320,32 +321,6 @@ $("#mentesButton").click(function (event) {
 });
 
 //BETÖLTÉS///////////////////////////////////////////////////////////////
-//projekt betöltés
-/*$("#projectBetoltes").click(function (event) {
-	event.preventDefault();
-	console.log('valami');
-	var loadId = $('#loadId').val();
-	$.ajax({
-		url: 'load.php',
-		method: 'POST',
-		success: function (data) {
-			
-			console.log("Ez az amit visszaad: " + data);
-			$("#kiiratashelye").html(data);
-			
-			//fel kell dolgozni a tömböt
-			var adatTomb = data;
-			
-			objectEleresiUtvonal = null;
-			objectMaterialEleresiUtvonal = null;
-			objectName = null;
-		},
-		error: function (jqxhr, status, exception) {
-			console.log('Hiba: ', exception);
-		}
-	});
-});*/
-
 //kijelölés
 document.addEventListener('click', function (event) {
 	var img = document.getElementById('kattinthatoKepek');
@@ -358,24 +333,32 @@ document.addEventListener('click', function (event) {
 			loaderId = kattinthatoKepek[i].nextElementSibling.value;
 			console.log('kattban');
 			console.log(loaderId);
-		}
-	}
-});
-
-//kijelölés törlése
-document.addEventListener('click', function (event) {
-	var img = document.getElementById('kattinthatoKepek');
-	var kattinthatoKepek = img.getElementsByTagName("img");
-	for (var i = 0; i < kattinthatoKepek.length; i++) {
-		var kattintvaLettE = kattinthatoKepek[i].contains(event.target);
-		if (!kattintvaLettE) {
+		} else if (!kattintvaLettE) {
 			kattinthatoKepek[i].style.border = 'none';
 		}
 	}
 });
 
+//projekt kijelölés
+document.addEventListener('click', function (event) {
+	var img = document.getElementById('projektLista');
+	var projektLista = img.getElementsByClassName("letter");
+	for (var i = 0; i < projektLista.length; i++) {
+		var kattintvaLettE = projektLista[i].contains(event.target);
+		if (kattintvaLettE) {
+			//ajax!!!
+			projektLista[i].style.backgroundColor = 'lime';
+			projektLoaderId = projektLista[i].nextElementSibling.value;
+			console.log('kattban');
+			console.log(projektLoaderId);
+		} else if (!kattintvaLettE) {
+			projektLista[i].style.backgroundColor = 'white';
+		}
+	}
+});
 
-//ez a button végzi a betöltést
+
+//ez a button végzi a bútor betöltést
 var loaderButton = document.getElementById('loaderButton');
 loaderButton.addEventListener('click', () => {
 	if (loaderId == null) {
@@ -388,7 +371,6 @@ loaderButton.addEventListener('click', () => {
 			url: 'load.php',
 			method: 'POST',
 			data: {
-				loaderId: loaderId,
 				loaderAction: 'load'
 			},
 			success: function (data) {
@@ -400,6 +382,40 @@ loaderButton.addEventListener('click', () => {
 				objectEleresiUtvonal = obj[1];
 				objectMaterialEleresiUtvonal = obj[2];
 				betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);
+			},
+			error: function (jqxhr, status, exception) {
+				console.log('Hiba: ', exception);
+			}
+		});
+	}
+});
+
+//projektbetöltés
+var projectBetoltesButton = document.getElementById('projectBetoltesButton');
+projectBetoltesButton.addEventListener('click', () => {
+	if (projektLoaderId == null) {
+		alert("Jelölj ki projektet!");
+		console.log("félrefut");
+	} else {
+		console.log("fv-ben");
+		console.log(projektLoaderId);
+		$.ajax({
+			url: 'load.php',
+			method: 'POST',
+			data: {
+				projektLoaderId: projektLoaderId,
+				projectLoaderAction: 'projectload'
+			},
+			success: function (data) {
+				console.log("Ez az amit visszaad: " + data);
+				$("#kiiratashelye").html(data);
+				/*var obj = JSON.parse(data);
+				console.log(obj[0]);
+				//betölt
+				objectName = obj[0];
+				objectEleresiUtvonal = obj[1];
+				objectMaterialEleresiUtvonal = obj[2];
+				betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);*/
 			},
 			error: function (jqxhr, status, exception) {
 				console.log('Hiba: ', exception);
