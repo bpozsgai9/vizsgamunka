@@ -15,12 +15,28 @@ if (isset($_POST["projectLoaderAction"]) and $_POST["projectLoaderAction"] == "p
 
     $projectId = $_POST['projektLoaderId'];
     $projectName = $phpModul->loadProjectName($projectId);
-    $furnitureIndexAndName = $phpModul->loadFurnitures($projectId);
-    $furnitureIndexAndPositions = [];
-    //pozíciók kilistázása
+    $furnitures = $phpModul->loadFurnitures($projectId);
     
-    var_dump($furnitureIndexAndName);
+    for ($i = 0; $i < sizeof($furnitures); $i++){
 
+        $positions = $phpModul->loadPositions( $furnitures[$i]['furniture_id'] );
+        $warehouse = $phpModul->loadWareHouseByName($furnitures[$i]['furniture_name']);
+
+        array_push($furnitures[$i],
+            [
+                "x" => $positions["x"],
+                "y" => $positions["y"],
+                "z" => $positions["z"],
+                "xr" => $positions["xr"],
+                "yr" => $positions["yr"],
+                "zr" => $positions["zr"],
+                "scale" => $positions["scale"],
+                "furniture_path" => $warehouse['furniture_path'],
+                "furniture_material_path" => $warehouse['furniture_material_path']
+            ]);
+    }
+    $backJson = json_encode($furnitures);
+    print_r($backJson);
 }
 
 ?>

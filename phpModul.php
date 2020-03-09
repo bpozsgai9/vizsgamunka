@@ -199,7 +199,7 @@ public function listProjects($user_id){
 		$bigArray = [];
 		if ($result->num_rows > 0) {
 		    while($row = $result->fetch_assoc()) {
-				$array = [ "id" => $row["id"], "furniture_name" => $row["furniture_name"] ];
+				$array = [ "furniture_id" => $row["id"], "furniture_name" => $row["furniture_name"] ];
 				array_push($bigArray, $array);
 			}
 			return $bigArray;
@@ -213,12 +213,21 @@ public function listProjects($user_id){
 	public function loadPositions($furniture_id){
 
 		$sql = "SELECT x, y, z, xr, yr, zr, scale FROM positions WHERE furniture_id =" . $furniture_id;
+		$result = $this->conn->query($sql);
 
 		if ($result->num_rows > 0) {
 		    while($row = $result->fetch_assoc()) {
-		        $array = [$row["x"], $row["y"], $row["z"], $row["xr"], $row["yr"], $row["zr"], $row["scale"]];
-		        return $array;
-		    }
+				$array = [
+						  "x" => $row["x"], 
+						  "y" => $row["y"], 
+						  "z" => $row["z"], 
+						  "xr" => $row["xr"], 
+						  "yr" => $row["yr"], 
+						  "zr" => $row["zr"], 
+						  "scale" => $row["scale"]
+						];
+			}
+			return $array;
 		} else {
 		    return "0 results";
 		}
@@ -234,6 +243,26 @@ public function listProjects($user_id){
 		if ($result->num_rows > 0) {
 		    while($row = $result->fetch_assoc()) {
 				$array = [ $row["furniture_name"], $row["furniture_path"], $row["furniture_material_path"] ];
+		        return $array;
+		    }
+		} else {
+		    return "0 results";
+		}
+	}
+
+	public function loadWareHouseByName($furniture_name){
+
+		$sql = "SELECT furniture_path, furniture_material_path 
+				FROM warehouse 
+				WHERE furniture_name = '" . $furniture_name . "'";
+		
+		$result = $this->conn->query($sql);
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+				$array = [ 
+					"furniture_path" => $row["furniture_path"], 
+					"furniture_material_path" => $row["furniture_material_path"] 
+				];
 		        return $array;
 		    }
 		} else {
