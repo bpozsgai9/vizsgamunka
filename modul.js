@@ -184,7 +184,7 @@ function onMouseDown(event) {
 function render() {
 	raycaster.setFromCamera(mouse, camera);
 	var intersects = raycaster.intersectObjects(scene.children);
-	/*if (intersects.length > 0) {
+	if (intersects.length > 0) {
 		if (INTERSECTED != intersects[0].object) {
 			if (INTERSECTED) {
 				control.detach(INTERSECTED);
@@ -197,11 +197,11 @@ function render() {
 			//console.log(butorok.length);
 		}
 	} else {
-		if (INTERSECTED){ 
+		if (INTERSECTED) {
 			control.detach(INTERSECTED);
 		}
 		INTERSECTED = null;
-	}*/
+	}
 	renderer.render(scene, camera);
 }
 
@@ -320,6 +320,27 @@ $("#mentesButton").click(function (event) {
 	});
 });
 
+//projektNévadás
+$("#projectNameButton").click(function (event) {
+	event.preventDefault();
+	var input = $("#projectNameInput").val();
+	$.ajax({
+		url: 'save.php',
+		method: 'POST',
+		data: {
+			saveNameAction: 'saveName',
+			projectName: input
+		},
+		success: function (data) {
+			console.log("Ez az amit visszaad: " + data);
+			$("#projektNevHelye").html("Projektnév: " + data);
+		},
+		error: function (jqxhr, status, exception) {
+			console.log('Hiba: ', exception);
+		}
+	});
+});
+
 //BETÖLTÉS///////////////////////////////////////////////////////////////
 //kijelölés
 document.addEventListener('click', function (event) {
@@ -371,6 +392,7 @@ loaderButton.addEventListener('click', () => {
 			url: 'load.php',
 			method: 'POST',
 			data: {
+				loaderId: loaderId,
 				loaderAction: 'load'
 			},
 			success: function (data) {
@@ -408,14 +430,30 @@ projectBetoltesButton.addEventListener('click', () => {
 			},
 			success: function (data) {
 				console.log("Ez az amit visszaad: " + data);
-				$("#kiiratashelye").html(data);
-				/*var obj = JSON.parse(data);
-				console.log(obj[0]);
-				//betölt
-				objectName = obj[0];
-				objectEleresiUtvonal = obj[1];
-				objectMaterialEleresiUtvonal = obj[2];
-				betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);*/
+				/*$("#kiiratashelye").html(data);*/
+				var obj = JSON.parse(data);
+				console.log(obj);
+				var projectName = obj[0][0].project_name;
+				$("#projektNevHelye").html("Projektnév: " + projectName);
+
+				for (var i = 0; i < obj.length; i++) {
+
+					objectName = obj[i].furniture_name;
+					objectEleresiUtvonal = obj[i][0].furniture_path;
+					objectMaterialEleresiUtvonal = obj[i][0].furniture_material_path;
+					var x = obj[i][0].x;
+					var y = obj[i][0].y;
+					var z = obj[i][0].z;
+					var xr = obj[i][0].xr;
+					var yr = obj[i][0].yr;
+					var zr = obj[i][0].zr;
+					var scale = obj[i][0].scale;
+					betolto(objectEleresiUtvonal,
+						objectMaterialEleresiUtvonal,
+						objectName,
+						x, y, z, xr, yr, zr, scale
+					);
+				}
 			},
 			error: function (jqxhr, status, exception) {
 				console.log('Hiba: ', exception);
@@ -424,7 +462,7 @@ projectBetoltesButton.addEventListener('click', () => {
 	}
 });
 
-function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName) {
+function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName, x = 2.5, y = 0, z = 2.5, xr = 0, yr = 0, zr = 0, scale = 2) {
 	// függvény ami paramétereket vár
 	loader.load(
 		//1. elérés
@@ -435,13 +473,16 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName)
 		function (object) {
 
 			//pozíció
-			object.position.set(2.5, 0, 2.5);
+			object.position.set(x, y, z);
 			document.getElementById('inputX').value = object.position.x;
 			document.getElementById('inputY').value = object.position.y;
 			document.getElementById('inputZ').value = object.position.z;
 
+			//forgás
+			object.rotation.set(xr, yr, zr);
+
 			//scale
-			object.scale.set(2, 2, 2);
+			object.scale.set(scale, scale, scale);
 			document.getElementById('inputScale').value = object.scale.x;
 
 			//material-t ad neki

@@ -1,10 +1,17 @@
 <?php
 include('phpModul.php');
 session_start();
+$phpModul = new PhpModul();
+
+
+if (isset($_POST["saveNameAction"]) and $_POST["saveNameAction"] == "saveName"){
+
+	$phpModul->saveProject($_POST['projectName'], $phpModul->getCurrentUserId($_SESSION['user_name']));
+	print_r($_POST['projectName']);
+}
+
 
 if (isset($_POST["action"]) and $_POST["action"] == "save"){
-
-	$phpModul = new PhpModul();
 
 	//bútorok mentése a projektbe
 	$furnituresData = json_decode($_POST["furnituresJsonData"]);

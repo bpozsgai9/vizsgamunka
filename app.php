@@ -8,7 +8,7 @@ setcookie("user_permission", $_SESSION["user_permission"], time() + (86400), "/"
 setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 //print_r($_SESSION);
 
-//tesztCommit
+$phpModul = new PhpModul();
 ?>
 
 <!DOCTYPE html>
@@ -28,10 +28,8 @@ setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
   		<div id="mydivheader">[+]</div>
 			<?php
 				echo "<div style='color: cyan'>Szia " . $_SESSION['user_name'] . "!</div>";
-				if (isset($_SESSION['current_project_name'])) {
-					echo "<div style='color: cyan'>Projekt: " . $_SESSION['current_project_name'] . "</div>";
-				}
-				?>
+			?>
+			<div style='color: cyan' id='projektNevHelye'></div>
 			<br />
 			<button id="infoId">Info</button><br />
 			<button id="furnitureModalButton">Bútorválasztó</button><br />
@@ -73,21 +71,8 @@ setcookie("user_name", $_SESSION["user_name"], time() + (86400), "/");*/
 				    	<h2>Új Projekt:</h2>
 						<div class="vonal"></div>
 						<br />
-						<form method="POST" class="projectForm">
-							<input type="text" name="projectName" placeholder="Projekt Név">
-							<input type="submit" name="projectNameSubmit" value="Létrehoz">
-						</form>
-						<?php
-							$phpModul = new PhpModul();
-							if (isset($_POST['projectNameSubmit'])) {
-								if (!empty($_POST['projectNameSubmit'])) {
-									$phpModul->saveProject($_POST['projectName'], $phpModul->getCurrentUserId($_SESSION['user_name']));
-									$_SESSION['current_project_name'] = $_POST['projectName'];
-								} else {
-									echo "Név kötelező!";
-								}		
-							}					
-						?>
+							<input type="text" id="projectNameInput" placeholder="Projekt Név">
+							<button id="projectNameButton">Létrehoz</button>
 						<h2>Eddigi Projektek:</h2>
 						<div class="vonal"></div>
 						<div id='projektLista'>

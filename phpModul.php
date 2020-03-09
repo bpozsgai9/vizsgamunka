@@ -72,7 +72,7 @@ class PhpModul{
 		$sql = "INSERT INTO project (project_name, user_id) VALUES ('" . $project_name . "' , " . $user_id .  ")";
 
 		if ($this->conn->query($sql) === TRUE) {
-		    echo "Új projekt sikeresen létrehozva!";
+		    echo "";
 		} else {
 		    echo "SQL Hiba: " . $sql . "<br>" . $this->conn->error;
 		}
