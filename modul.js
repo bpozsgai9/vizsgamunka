@@ -95,57 +95,30 @@ function init() {
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFShadowMap;
 
-	//alap
-	alap();
-
-	orbit = new OrbitControls(camera, renderer.domElement);
-	orbit.update();
-	orbit.addEventListener('change', render);
-
 	control = new TransformControls(camera, renderer.domElement);
 	control.addEventListener('change', render);
 	control.addEventListener('dragging-changed', function (event) {
 		orbit.enabled = !event.value;
 	});
 	scene.add(control);
+
+	orbit = new OrbitControls(camera, renderer.domElement);
+	orbit.addEventListener('change', render);
+	orbit.update();
 	control.attach(object);
 
 	//RESIZE
 	window.addEventListener('resize', onWindowResize, false);
 	window.addEventListener('keydown', function (event) {
 		switch (event.keyCode) {
-			case 17: // Ctrl
-				control.setTranslationSnap(100);
-				control.setRotationSnap(THREE.Math.degToRad(15));
-				break;
-			case 87: // W
+			case 48: // 0
 				control.setMode("translate");
 				break;
-			case 69: // E
+			case 49: // 1
 				control.setMode("rotate");
 				break;
-			case 82: // R
+			case 50: // 2
 				control.setMode("scale");
-				break;
-			case 187:
-			case 107: // +, =, num+
-				control.setSize(control.size + 0.1);
-				break;
-			case 189:
-			case 109: // -, _, num-
-				control.setSize(Math.max(control.size - 0.1, 0.1));
-				break;
-			case 88: // X
-				control.showX = !control.showX;
-				break;
-			case 89: // Y
-				control.showY = !control.showY;
-				break;
-			case 90: // Z
-				control.showZ = !control.showZ;
-				break;
-			case 32: // Spacebar
-				control.enabled = !control.enabled;
 				break;
 		}
 	});
@@ -163,6 +136,8 @@ function init() {
 	document.addEventListener('mousedown', onMouseDown, false);
 	window.requestAnimationFrame(render);
 
+	//alap
+	alap();
 
 
 }
@@ -182,25 +157,15 @@ function onMouseDown(event) {
 }
 
 function render() {
+	butorok = scene.children;
 	raycaster.setFromCamera(mouse, camera);
 	var intersects = raycaster.intersectObjects(scene.children);
-	if (intersects.length > 0) {
-		if (INTERSECTED != intersects[0].object) {
-			if (INTERSECTED) {
-				control.detach(INTERSECTED);
-			}
-			INTERSECTED = intersects[0].object;
-			control.attach(INTERSECTED);
-			butorok = scene.children;
-			//console.log(scene.children);
-			//console.log(butorok);
-			//console.log(butorok.length);
+	for (var i = 0; i < intersects.length; i++) {
+		if (intersects[i].object.name.includes('inner')) {
+			control.attach(intersects[i].object);
+			break;
 		}
-	} else {
-		if (INTERSECTED) {
-			control.detach(INTERSECTED);
-		}
-		INTERSECTED = null;
+
 	}
 	renderer.render(scene, camera);
 }
@@ -214,6 +179,7 @@ function alap() {
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.rotation.x = 1.57; //90 fok
 	mesh.position.set(2.5, 0, 2.5);
+	mesh.name = 'alap';
 	scene.add(mesh);
 
 	geometry = new THREE.PlaneGeometry(5, 5, 32);
@@ -222,6 +188,7 @@ function alap() {
 	mesh = new THREE.Mesh(geometry, material);
 	mesh.rotation.y = 1.57; //90 fok
 	mesh.position.set(0, 2.5, 2.5);
+	mesh.name = 'alap';
 	scene.add(mesh);
 
 	geometry = new THREE.PlaneGeometry(5, 5, 32);
@@ -229,6 +196,7 @@ function alap() {
 	material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 	mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(2.5, 2.5, 0);
+	mesh.name = 'alap';
 	scene.add(mesh);
 }
 
@@ -241,15 +209,9 @@ document.getElementById('infoId').onclick = function () {
 
 Üdvözöllek a Truebox dobozban ahol összeállíthatod a saját megálmodott szobád!
 
-W - mozgatás
-E - forgatás
-R - méretezés
-+ - segéd nagyítás
-- - segéd kicsinyítés
-Tartsd lenyomva a "Ctrl" billenytűt a tér mozgatásához
-X - nyíl látszik/nem látszik
-Y - nyíl látszik/nem látszik
-Z - nyíl látszik/nem látszik | "Spacebar" segéd tiltás
+0 - mozgatás
+1 - forgatás
+2 - méretezés
 
 Az 'Új Projekt' gombbal hozol létre üres szobát.
 
@@ -472,19 +434,6 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName,
 		//a meghívás után itt konfigurálható
 		function (object) {
 
-			//pozíció
-			object.position.set(x, y, z);
-			document.getElementById('inputX').value = object.position.x;
-			document.getElementById('inputY').value = object.position.y;
-			document.getElementById('inputZ').value = object.position.z;
-
-			//forgás
-			object.rotation.set(xr, yr, zr);
-
-			//scale
-			object.scale.set(scale, scale, scale);
-			document.getElementById('inputScale').value = object.scale.x;
-
 			//material-t ad neki
 			object.traverse(function (child) {
 				if (child instanceof THREE.Mesh) {
@@ -493,16 +442,30 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName,
 					child.material = material;
 				}
 			});
+			var mesh = object.children[0];
+
+			//pozíció
+			mesh.position.set(x, y, z);
+			document.getElementById('inputX').value = mesh.position.x;
+			document.getElementById('inputY').value = mesh.position.y;
+			document.getElementById('inputZ').value = mesh.position.z;
+
+			//forgás
+			mesh.rotation.set(xr, yr, zr);
+
+			//scale
+			mesh.scale.set(scale, scale, scale);
+			document.getElementById('inputScale').value = mesh.scale.x;
 
 			//MENTÉSHEZ!!!
-			object.name = "inner" + objectName;
+			mesh.name = "inner" + objectName;
 
 			//jelenethez adás
-			scene.add(object);
+			scene.add(mesh);
 
 			//kijelölés
-			control.detach(INTERSECTED);
-			control.attach(object);
+			control.attach(mesh);
+
 		},
 		//amíg tölt a file ez történik
 		function (xhr) {
