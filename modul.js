@@ -14,7 +14,7 @@ var projektLoaderId; //id a projektbetöltéshez
 var objectEleresiUtvonal; //betöltéshez az út
 var objectMaterialEleresiUtvonal; //betöltéshez az út
 var objectName; // betöltéshez a bútor neve
-var mouse = new THREE.Vector2(), INTERSECTED;
+var mouse;
 var butorok; //global scene.childeren
 
 window.onload = function () {
@@ -26,6 +26,9 @@ function init() {
 
 	//raycaster
 	raycaster = new THREE.Raycaster();
+
+	//egér
+	mouse = new THREE.Vector2();
 
 	//renderer
 	renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -58,34 +61,10 @@ function init() {
 	light.shadow.mapSize.height = 1024;
 	scene.add(light);
 
-	//alap kocka a teszteléshez
-	//BoxBufferGeometry konstruktor(xHossz, yHossz, zHossz)
-	var tesztGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
-	//MeshLambertMaterial (fényfogadó anyag)
-	var tesztMaterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
-	//Mesh (kész forma) konstruktor(geometry, material)
-	var object = new THREE.Mesh(tesztGeometry, tesztMaterial);
-	//árnyék vetés
-	object.castShadow = true;
-	//árnyék fogadás
-	object.receiveShadow = true;
-	//pozíció
-	object.position.set(0, 0, 0);
-	//név
-	object.name = "tesztKocka";
-	//alap kocka jelenethez adása
-	scene.add(object);
-
-
 	//myObject.name = "objectName"; név
 	//var object = scene.getObjectByName("objectName"); getter
 	//var object = scene.getObjectById(4);
 	//scene.remove(object); törlés
-
-
-	//axes, segít átlátni a projektet
-	//var axesHelper = new THREE.AxesHelper(5);
-	//scene.add(axesHelper);
 
 	//renderer beállítások
 	//labert material miatt kell lámpa meg árnyékok
@@ -96,19 +75,14 @@ function init() {
 	renderer.shadowMap.type = THREE.PCFShadowMap;
 
 	control = new TransformControls(camera, renderer.domElement);
+	//minden eseményváltozásra fusson le a render
 	control.addEventListener('change', render);
+	//legyen tiltva az orbit működése ameddig a control húzást érzékel
 	control.addEventListener('dragging-changed', function (event) {
 		orbit.enabled = !event.value;
 	});
 	scene.add(control);
 
-	orbit = new OrbitControls(camera, renderer.domElement);
-	orbit.addEventListener('change', render);
-	orbit.update();
-	control.attach(object);
-
-	//RESIZE
-	window.addEventListener('resize', onWindowResize, false);
 	window.addEventListener('keydown', function (event) {
 		switch (event.keyCode) {
 			case 48: // 0
@@ -123,16 +97,14 @@ function init() {
 		}
 	});
 
-	window.addEventListener('keyup', function (event) {
-		switch (event.keyCode) {
-			case 17: // Ctrl
-				control.setTranslationSnap(null);
-				control.setRotationSnap(null);
-				break;
-		}
-	});
+	orbit = new OrbitControls(camera, renderer.domElement);
+	//minden eseményváltozásra fusson le a render
+	orbit.addEventListener('change', render);
+	//frissítse az orbit helyzetét
+	orbit.update();
 
 
+	window.addEventListener('resize', onWindowResize, false);
 	document.addEventListener('mousedown', onMouseDown, false);
 	window.requestAnimationFrame(render);
 
@@ -442,6 +414,7 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName,
 					child.material = material;
 				}
 			});
+			//ez lesz a mesh mivel az object egy Group típus
 			var mesh = object.children[0];
 
 			//pozíció
