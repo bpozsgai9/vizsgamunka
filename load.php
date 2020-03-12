@@ -14,14 +14,13 @@ if (isset($_POST["loaderAction"]) and $_POST["loaderAction"] == "load") {
 if (isset($_POST["projectLoaderAction"]) and $_POST["projectLoaderAction"] == "projectload") {
 
     $projectId = $_POST['projektLoaderId'];
-    $furnitures = $phpModul->loadFurnitures($projectId);
+    $furnitures = (array)($phpModul->loadFurnitures($projectId));
     $projectName = $phpModul->loadProjectName($projectId);
 
     for ($i = 0; $i < sizeof($furnitures); $i++){
 
-        $positions = $phpModul->loadPositions( $furnitures[$i]['furniture_id'] );
-        $warehouse = $phpModul->loadWareHouseByName($furnitures[$i]['furniture_name']);
-        
+        $positions = (array)($phpModul->loadPositions( $furnitures[$i]['furniture_id'] ));
+        $warehouse = (array)($phpModul->loadWareHouseByName($furnitures[$i]['furniture_name']));
         array_push($furnitures[$i],
             [
                 "x" => $positions["x"],
@@ -34,7 +33,8 @@ if (isset($_POST["projectLoaderAction"]) and $_POST["projectLoaderAction"] == "p
                 "furniture_path" => $warehouse['furniture_path'],
                 "furniture_material_path" => $warehouse['furniture_material_path'],
                 "project_name" => $projectName
-            ]);
+            ]
+        );
     }
     $backJson = json_encode($furnitures);
     print_r($backJson);

@@ -49,9 +49,9 @@ class PhpModul{
 
 	}
 
-	public function getFurnitureId($furniture_name){
+	public function getFurnitureId($project_id){
 		
-		$sql = "SELECT id FROM furniture WHERE furniture_name ='" . $furniture_name . "'";
+		$sql = "SELECT id FROM furniture WHERE project_id ='" . $project_id . "'";
 
 		$result = $this->conn->query($sql);
 
@@ -150,11 +150,6 @@ public function listProjects($user_id){
 					echo "</div>";
 				echo "</div>";
 				echo "<input type='hidden' name='project_id' value='" . $row['id'] . "'>";  
-	    			/*//törlés
-	    			echo "<form action='app.php' method='POST'>";
-	    				echo "<input type='hidden' name='deleteProjectId' value='" . $row['id'] ."'>";
-	    				echo "<td><input type='submit' name='deleteProject' value='Törlés'></td>";
-    				echo "</form>";*/
 	    		}
 			} else {
 		    	echo "Nincs adat";

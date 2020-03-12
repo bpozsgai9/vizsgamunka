@@ -175,25 +175,30 @@ function alap() {
 
 
 //INFO//////////////////////////////////////////////////////////////////////////////////
-document.getElementById('infoId').onclick = function () {
+
+var infoId = document.getElementById('infoId');
+infoId.addEventListener('click', () => {
 	//template string
 	alert(`Szia!
 
 Üdvözöllek a Truebox dobozban ahol összeállíthatod a saját megálmodott szobád!
 
+Jobb egér gomb: A szoba mozgatása.
+Bal egér gomb: A tér mozgatása, kattintással bútor kijelölése.
+
 0 - mozgatás
 1 - forgatás
 2 - méretezés
 
-Az 'Új Projekt' gombbal hozol létre üres szobát.
-
-A 'Bútorválasztó'-ra kattintva nyitsz meg egy bútorokkal teli könyvtárat`);
-
-}
+'Projektkezelő' gomb: Itt találod az új projekt létrehozását és a meglévő betöltését.
+'Bútorválasztó' gomb: Ide kattintva nyitsz meg egy bútorokkal teli könyvtárat.
+'Export' gomb: Png mentése a kamera képből.
+'Mentés' gomb: Létrehozott Projekt mentése.`);
+});
 
 //EXPORTKÉP//////////////////////////////////////////////////////////////////////////////
 var exportButton = document.getElementById('exportButton');
-exportButton.addEventListener('click', function () {
+exportButton.addEventListener('click', () => {
 
 	var rendererExport = new THREE.WebGLRenderer({ antialias: true });
 	rendererExport.setSize(window.innerWidth, window.innerHeight);
@@ -206,7 +211,6 @@ exportButton.addEventListener('click', function () {
 	a.download = "export.png";
 	a.click();
 	//document.body.removeChild(a);
-
 });
 
 //MENTÉS//////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +238,7 @@ function getFurnitureDataJson() {
 }
 
 
-$("#mentesButton").click(function (event) {
+$("#mentesButton").click((event) => {
 	event.preventDefault();
 	$.ajax({
 		url: 'save.php',
@@ -243,19 +247,19 @@ $("#mentesButton").click(function (event) {
 			action: 'save',
 			furnituresJsonData: getFurnitureDataJson()
 		},
-		success: function (data) {
+		success: (data) => {
 			console.log("Ez az amit visszaad: " + data);
 			$("#kiiratashelye").html(data);
 
 		},
-		error: function (jqxhr, status, exception) {
+		error: (jqxhr, status, exception) => {
 			console.log('Hiba: ', exception);
 		}
 	});
 });
 
 //projektNévadás
-$("#projectNameButton").click(function (event) {
+$("#projectNameButton").click((event) => {
 	event.preventDefault();
 	var input = $("#projectNameInput").val();
 	$.ajax({
@@ -265,11 +269,11 @@ $("#projectNameButton").click(function (event) {
 			saveNameAction: 'saveName',
 			projectName: input
 		},
-		success: function (data) {
+		success: (data) => {
 			console.log("Ez az amit visszaad: " + data);
 			$("#projektNevHelye").html("Projektnév: " + data);
 		},
-		error: function (jqxhr, status, exception) {
+		error: (jqxhr, status, exception) => {
 			console.log('Hiba: ', exception);
 		}
 	});
@@ -277,7 +281,7 @@ $("#projectNameButton").click(function (event) {
 
 //BETÖLTÉS///////////////////////////////////////////////////////////////
 //kijelölés
-document.addEventListener('click', function (event) {
+document.addEventListener('click', (event) => {
 	var img = document.getElementById('kattinthatoKepek');
 	var kattinthatoKepek = img.getElementsByTagName("img");
 	for (var i = 0; i < kattinthatoKepek.length; i++) {
@@ -295,7 +299,7 @@ document.addEventListener('click', function (event) {
 });
 
 //projekt kijelölés
-document.addEventListener('click', function (event) {
+document.addEventListener('click', (event) => {
 	var img = document.getElementById('projektLista');
 	var projektLista = img.getElementsByClassName("letter");
 	for (var i = 0; i < projektLista.length; i++) {
@@ -329,7 +333,7 @@ loaderButton.addEventListener('click', () => {
 				loaderId: loaderId,
 				loaderAction: 'load'
 			},
-			success: function (data) {
+			success: (data) => {
 				console.log("Ez az amit visszaad: " + data);
 				var obj = JSON.parse(data);
 				console.log(obj[0]);
@@ -339,7 +343,7 @@ loaderButton.addEventListener('click', () => {
 				objectMaterialEleresiUtvonal = obj[2];
 				betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName);
 			},
-			error: function (jqxhr, status, exception) {
+			error: (jqxhr, status, exception) => {
 				console.log('Hiba: ', exception);
 			}
 		});
@@ -362,9 +366,9 @@ projectBetoltesButton.addEventListener('click', () => {
 				projektLoaderId: projektLoaderId,
 				projectLoaderAction: 'projectload'
 			},
-			success: function (data) {
+			success: (data) => {
 				console.log("Ez az amit visszaad: " + data);
-				/*$("#kiiratashelye").html(data);*/
+				//$("#kiiratashelye").html(data);
 				var obj = JSON.parse(data);
 				console.log(obj);
 				var projectName = obj[0][0].project_name;
@@ -389,7 +393,7 @@ projectBetoltesButton.addEventListener('click', () => {
 					);
 				}
 			},
-			error: function (jqxhr, status, exception) {
+			error: (jqxhr, status, exception) => {
 				console.log('Hiba: ', exception);
 			}
 		});
@@ -404,10 +408,10 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName,
 
 		//2. függvény
 		//a meghívás után itt konfigurálható
-		function (object) {
+		(object) => {
 
 			//material-t ad neki
-			object.traverse(function (child) {
+			object.traverse((child) => {
 				if (child instanceof THREE.Mesh) {
 					var texture = new THREE.TextureLoader().load(objectMaterialEleresiUtvonal);
 					var material = new THREE.MeshLambertMaterial({ map: texture, side: THREE.DoubleSide });
@@ -441,11 +445,11 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName,
 
 		},
 		//amíg tölt a file ez történik
-		function (xhr) {
+		(xhr) => {
 			console.log((xhr.loaded / xhr.total * 100) + '% betöltve');
 		},
 		//hibakezelés
-		function (error) {
+		(error) => {
 			console.log('Hiba: ' + error);
 		}
 	);

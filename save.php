@@ -6,8 +6,10 @@ $phpModul = new PhpModul();
 
 if (isset($_POST["saveNameAction"]) and $_POST["saveNameAction"] == "saveName"){
 
-	$phpModul->saveProject($_POST['projectName'], $phpModul->getCurrentUserId($_SESSION['user_name']));
-	print_r($_POST['projectName']);
+	$_SESSION['projectName'] = $_POST['projectName'];
+	$phpModul->saveProject($_SESSION['projectName'], $phpModul->getCurrentUserId($_SESSION['user_name']));
+	print_r($_SESSION['projectName']);
+
 }
 
 
@@ -24,7 +26,7 @@ if (isset($_POST["action"]) and $_POST["action"] == "save"){
 	//adatbázisba mentés
 	foreach ($furnituresData as $furniture) {
 
-		$phpModul->saveFurnitures($furniture['furniture_name'], $phpModul->getCurrentProjectId($_SESSION['current_project_name']));
+		$phpModul->saveFurnitures($furniture['furniture_name'], $phpModul->getCurrentProjectId($_SESSION['projectName']));
 		$phpModul->savePositions($furniture['x'],
 								 $furniture['y'],
 								 $furniture['z'],
@@ -32,7 +34,7 @@ if (isset($_POST["action"]) and $_POST["action"] == "save"){
 								 $furniture['yr'],
 								 $furniture['zr'],
 								 $furniture['scale'],
-								 $phpModul->getFurnitureId($furniture['furniture_name']));
+								 $phpModul->getFurnitureId($phpModul->getCurrentProjectId($_SESSION['projectName'])));
 	}
 }
 	
