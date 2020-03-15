@@ -34,7 +34,7 @@ if (isset($_POST["action"]) and $_POST["action"] == "save"){
 								 $furniture['yr'],
 								 $furniture['zr'],
 								 $furniture['scale'],
-								 $phpModul->getFurnitureId($furniture['furniture_name']);
+								 $phpModul->getFurnitureId($furniture['furniture_name']));
 	}
 }
 	
