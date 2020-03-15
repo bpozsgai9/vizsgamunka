@@ -423,16 +423,12 @@ function betolto(objectEleresiUtvonal, objectMaterialEleresiUtvonal, objectName,
 
 			//pozíció
 			mesh.position.set(x, y, z);
-			document.getElementById('inputX').value = mesh.position.x;
-			document.getElementById('inputY').value = mesh.position.y;
-			document.getElementById('inputZ').value = mesh.position.z;
 
 			//forgás
 			mesh.rotation.set(xr, yr, zr);
 
 			//scale
 			mesh.scale.set(scale, scale, scale);
-			document.getElementById('inputScale').value = mesh.scale.x;
 
 			//MENTÉSHEZ!!!
 			mesh.name = "inner" + objectName;

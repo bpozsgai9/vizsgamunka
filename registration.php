@@ -52,11 +52,11 @@ class Registration{
 				<label>regisztráció</label>
 			</div>
 			<div class="signinInput">
-				<input type="text" name="insert_email" value="email">
+				<input type="text" name="insert_email" placeholder="email">
 				<div class="vonal"></div>
-				<input type="text" name="insert_name" value="felhasználónév">
+				<input type="text" name="insert_name" placeholder="felhasználónév">
 				<div class="vonal"></div>
-				<input type="password" name="insert_pwd" value="jelszó">
+				<input type="password" name="insert_pwd" placeholder="jelszó">
 			</div>
 			<div class="signinSubmit">
 				<input type="submit" name="insert" value="Fiókom létrehozása">

@@ -35,26 +35,13 @@ $phpModul = new PhpModul();
 			<button id="furnitureModalButton">Bútorválasztó</button><br />
 			<button id="projectModalButton">Projektkezelő</button><br />
 			<button id="exportButton">Export</button><br />
-			<form method="POST">
-				<button id="mentesButton">Mentés</button><br />
-			</form>
+			<button id="mentesButton">Mentés</button><br />
 			<div id="kiiratashelye"></div>		
 			<?php
 				//Kijelentkezés -> login.php-ban van az osztály
 				$forms = new Forms(); 
 				$forms->logout_form();
 			?>
-
-			<br />
-			<label>Értékek:</label>
-			<br />
-			<input type="number" placeholder="x" id="inputX"><br />
-			<input type="number" placeholder="y" id="inputY"><br />
-			<input type="number" placeholder="z" id="inputZ"><br />
-			<input type="number" placeholder="rx" id="inputRX"><br />
-			<input type="number" placeholder="ry" id="inputRY"><br />
-			<input type="number" placeholder="rz" id="inputRZ"><br />
-			<input type="number" placeholder="méret" id="inputScale">
 		</div>
 
 		
