@@ -26,15 +26,24 @@ if (isset($_POST["action"]) and $_POST["action"] == "save"){
 	//adatbázisba mentés
 	foreach ($furnituresData as $furniture) {
 
-		$phpModul->saveFurnitures($furniture['furniture_name'], $phpModul->getCurrentProjectId($_SESSION['projectName']));
-		$phpModul->savePositions($furniture['x'],
-								 $furniture['y'],
-								 $furniture['z'],
-								 $furniture['xr'],
-								 $furniture['yr'],
-								 $furniture['zr'],
-								 $furniture['scale'],
-								 $phpModul->getFurnitureId($furniture['furniture_name']));
+		$phpModul->saveFurnitures(
+			$furniture['furniture_name'], 
+			$phpModul->getCurrentProjectId($_SESSION['projectName'])
+		);
+
+		$phpModul->savePositions(
+							$furniture['x'],
+							$furniture['y'],
+							$furniture['z'],
+							$furniture['xr'],
+							$furniture['yr'],
+							$furniture['zr'],
+							$furniture['scale'],
+							$phpModul->getFurnitureId(
+								$furniture['furniture_name'],
+								$phpModul->getCurrentProjectId($_SESSION['projectName'])
+							)
+		);
 	}
 }
 	

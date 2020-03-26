@@ -1,5 +1,11 @@
 body{
   font-family: 'Space Mono';
+  background-image: url('texture/hatter.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color:#4a4a4a;
+  height: 500px;
 }
 .loginPanel{ 
   max-width: 20%;
@@ -69,4 +75,5 @@ a{
   color: cyan;
   text-decoration: none;
 }
+
 

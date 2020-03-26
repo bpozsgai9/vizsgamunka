@@ -49,9 +49,10 @@ class PhpModul{
 
 	}
 
-	public function getFurnitureId($furniture_name){
+	public function getFurnitureId($furniture_name, $project_id){
 		
-		$sql = "SELECT id FROM furniture WHERE furniture_name ='" . $furniture_name . "'";
+		$sql = "SELECT id FROM furniture WHERE furniture_name ='" . $furniture_name . "' 
+		AND project_id = $project_id";
 
 		$result = $this->conn->query($sql);
 

@@ -31,6 +31,8 @@ class Forms{
 					</div>
 				</form>
 			</div>
+			<!-- <div class="container"></div>
+			<script type="module" src="forms.js"></script> -->
 		</body>
 		</html>
 		<?php		
