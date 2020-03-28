@@ -1,3 +1,4 @@
+
 body{
   font-family: 'Space Mono';
   background-image: url('texture/hatter.png');
@@ -29,7 +30,7 @@ label{
 
 /*ebbe van benne az input*/
 .loginInput{
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0);
   padding: 10%;
 }
 
@@ -40,6 +41,7 @@ input[type='password']{
   font-size: 110%;
   font-style: italic;
   border: none;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /*két submit közötti vonal*/
