@@ -103,7 +103,7 @@ $phpModul = new PhpModul();
 			</div>
 		</div>
 		<div id="canvasDiv"></div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="jquery.min.js"></script>
 		<script type="text/javascript" src="dragable.js"></script>
 		<script type="text/javascript" src="modal.js"></script>
 		<script type="module" src="modul.js"></script>

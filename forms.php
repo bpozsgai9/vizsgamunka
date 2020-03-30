@@ -45,7 +45,7 @@ class Forms{
 		echo "</form>";
 		if (isset($_POST['logout_submit'])) {
 			session_destroy();
-			header("Location: login.php");
+			header("Location: index.php");
 		}
 	}
 }

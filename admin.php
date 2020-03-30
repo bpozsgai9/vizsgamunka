@@ -24,31 +24,54 @@ class Admin{
 
 	public function listData(){
 
-		$sql = "SELECT user_id, user_email, user_name, user_permission, user_status FROM users";
-		$result = $this->conn->query($sql);
+		$sql = "SELECT user_id, user_email, user_name, user_permission, user_status FROM users ORDER BY user_id ASC";
 
+		$result = $this->conn->query($sql);
+		$sorszam = 0;
 		//tábla teteje
 		echo "<table id='table_id'>";
 		  echo "<tr>";
-		    echo "<th>ID</th>";
+			echo "<th>SORSZÁM</th>";
 		    echo "<th>EMAIL</th>";
 		    echo "<th>FELHASZNÁLÓNÉV</th>";
 		    echo "<th>JOGOSULTSÁG</th>";
-		    echo "<th>STÁTUSZ</th>";
+		    echo "<th>STÁTUSZ (BANN)</th>";
 		  echo "</tr>";
 
 		//adatok
 		if ($result->num_rows > 0) {
     		while($row = $result->fetch_assoc()) {
+				$sorszam++;
     			echo "<tr>";
     				//módosít
     				echo "<form action='admin.php' method='POST'>";
-    				echo "<td><input type='text' name='update_id' value='" . $row['user_id'] . "'></td>";
+					echo "<td style='color: white; font-weight: bold'>". $sorszam . "</td>";
     				echo "<td><input type='text' name='update_email' value='" . $row['user_email'] . "'></td>";
     				echo "<td><input type='text' name='update_name' value='" . $row['user_name'] . "'></td>";
-    				echo "<td><input type='text' name='update_permission' value='" . $row['user_permission'] . "'></td>";
-    				echo "<td><input type='text' name='update_status' value='" . $row['user_status'] . "'></td>";
-    				echo "<td><input type='submit' name='update' value='Módosít'></td>";
+					//select
+					echo "<td><select name='update_permission'>";
+					if ($row['user_permission'] == 'user') {
+						echo "<option value='user'>User</option>";
+						echo "<option value='admin'>Admin</option>";
+					}
+					else if ($row['user_permission'] == 'admin') {
+						echo "<option value='admin'>Admin</option>";
+						echo "<option value='user'>User</option>";
+					}
+					echo "</select></td>";
+					//státusz
+					echo "<td><select name='update_status'>";
+					if ($row['user_status'] == 0) {
+						echo "<option value='0'>Aktív</option>";
+						echo "<option value='1'>Bann</option>";
+					}
+					else if ($row['user_status'] == 1) {
+						echo "<option value='1'>Bann</option>";
+						echo "<option value='0'>Aktív</option>";
+					}
+					echo "</select></td>";
+					echo "<input type='hidden' name='update_id' value='" . $row['user_id'] ."'>";
+    				echo "<td><input type='submit' name='update' value='Módosít' style='background-color: orange';></td>";
     				echo "</form>";
     				//törlés
     				echo "<form action='admin.php' method='POST'>";
@@ -82,7 +105,7 @@ class Admin{
 		user_name = '" . $user_name . "', 
 		user_permission = '" . $user_permission . "', 
 		user_status = '" . $user_status . "'
-		WHERE user_id=" . $user_id;
+		WHERE user_id =" . $user_id;
 
 		if ($this->conn->query($sql) === TRUE) {
 		    echo "Sikeres frissítés!";
@@ -119,13 +142,16 @@ class Admin{
 	<link href="https://fonts.googleapis.com/css?family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-	<?php print_r($_SESSION); ?>
-	<?php 
-		$admin = new Admin(); 
-		$forms = new Forms();
-		$forms->logout_form();
-	?>
-	<h1>Admin oldal (felhasználók kezelése)</h1>
+	<div class="header">
+		<?php 
+			//print_r($_SESSION);
+			$admin = new Admin(); 
+			$forms = new Forms();
+			$forms->logout_form();
+		?>
+		<h1>Admin oldal (felhasználók kezelése)</h1>
+		</p>
+	</div>
 	<form action="admin.php" method="POST">
 		<h2>Új felhasználó felvétele:</h2>
 		<table>
@@ -142,7 +168,7 @@ class Admin{
 				<th><input type="text" name="insert_pwd"></th>
 				<th><input type="text" name="insert_permission"></th>
 				<th><input type="text" name="insert_status"></th>
-				<th><input type="submit" name="insert" value="Felvétel"></th>
+				<th><input type="submit" name="insert" value="Felvétel" style='background-color: lime';></th>
 			</tr>
 		</table>
 	</form>

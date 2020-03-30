@@ -13,11 +13,16 @@ if(isset($_POST["action"]) and $_POST["action"]=="cmd_login"){
 		!empty($_POST["input_password"])
 		){
 		$login = new users();
+		
+		//user_status-ra vizsgál
+		$isBanned = $login->isBan($_POST["input_username"], $_POST["input_password"]);
+		//egyező név és jelszóra vizsgál
 		$_SESSION["login_state"] = $login->check_login(
 										$_POST["input_username"],
 										$_POST["input_password"]);
 		
-		if($_SESSION["login_state"]=="login_ok"){
+		if($_SESSION["login_state"]=="login_ok" && $isBanned == 0){
+
 			$_SESSION["user_permission"] = $login->check_permission($_POST["input_username"]);	
 		}									
 	}
@@ -116,6 +121,29 @@ class users{
 			return "login_nemok";
 		}
 		
+	}
+
+	public function isBan($username, $pwd){
+		
+		$this->sql = "SELECT 
+						`user_status`
+					  FROM 
+						`users`
+					  WHERE
+						user_name = '$username' and
+						user_pwd = '$pwd'
+					  ";
+		
+		$this->result = $this->conn->query($this->sql);
+		
+		if ($this->result->num_rows == 1) {
+			while($row = $this->result->fetch_assoc()) {
+		        return $row["user_status"];
+		    }
+		} else {
+			return "0 érték";
+		}
+
 	}
 }
 
