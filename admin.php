@@ -166,8 +166,18 @@ class Admin{
 				<th><input type="text" name="insert_email"></th>
 				<th><input type="text" name="insert_name"></th>
 				<th><input type="text" name="insert_pwd"></th>
-				<th><input type="text" name="insert_permission"></th>
-				<th><input type="text" name="insert_status"></th>
+				<th>
+				<select name="insert_permission">
+				<option value='user'>User</option>
+				<option value="admin">Admin</option>
+				</select>
+				</th>
+				<th>
+				<select name="insert_status">
+				<option value='0'>Aktív</option>
+				<option value="1">Bann</option>
+				</select>
+				</th>
 				<th><input type="submit" name="insert" value="Felvétel" style='background-color: lime';></th>
 			</tr>
 		</table>

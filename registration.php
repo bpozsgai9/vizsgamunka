@@ -27,7 +27,7 @@ class Registration{
 
 		if ($this->conn->query($sql) === TRUE) {
 		    echo "Új felhasználó sikeresen létrehozva!";
-		    header("Location: login.php");
+		    header("Location: index.php");
 		} else {
 		    echo "Hiba: " . $sql . "<br>" . $this->conn->error;
 		}
@@ -62,7 +62,7 @@ class Registration{
 				<input type="submit" name="insert" value="Fiókom létrehozása">
 			</div>
 			<div class="visszaA">
-				<a href="login.php">Vissza</a>
+				<a href="index.php">Vissza</a>
 			</div>
 		</div>
 	</form>
