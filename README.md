@@ -1,7 +1,7 @@
 # Vizsgamunka
 
 TrueBox 3D lakberendező alkalmazás
-(adatbázis és obj fájlok nélkül)
+(adatbázis nélkül)
 
 **Frontend:**
 - Three.js
